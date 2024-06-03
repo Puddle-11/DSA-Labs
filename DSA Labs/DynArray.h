@@ -31,11 +31,11 @@ NOTE: If the unit test is not on, that code will not be compiled!
 */
 
 // Main toggle
-#define LAB_1	0
+#define LAB_1	1
 
 // Individual unit test toggles
-#define LAB1_DEFAULT_CONSTRUCTOR_NO_ARGS			0
-#define LAB1_DEFAULT_CONSTRUCTOR_WITH_ARGS			0
+#define LAB1_DEFAULT_CONSTRUCTOR_NO_ARGS			1
+#define LAB1_DEFAULT_CONSTRUCTOR_WITH_ARGS			1
 #define LAB1_BRACKET_OPERATOR						0
 #define LAB1_SIZE_ACCESSOR							0
 #define LAB1_CAPACITY_ACCESSOR						0
@@ -60,13 +60,23 @@ class DynArray {
 	// Data members
 	// NOTE: All values set to -1 for unit test purposes
 	Type* mArray = reinterpret_cast<Type*>(-1);
+
 	size_t mSize = -1;
+
 	size_t mCapacity = -1;
 
 public:
 
+
+
+
+	//Constructor w/ args
 	DynArray(size_t _startingCap = 0) {
-		// TODO: Implement this method
+
+			// TODO: Implement this method
+			mArray = nullptr;
+			mSize = _startingCap;
+			mCapacity = _startingCap;
 		
 	};
 
@@ -75,6 +85,7 @@ public:
 
 	}
 
+	//Copy constructor
 	DynArray(const DynArray& _copy) {
 		// TODO: Implement this method
 
