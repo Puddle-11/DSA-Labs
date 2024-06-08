@@ -31,15 +31,15 @@ NOTE: If the unit test is not on, that code will not be compiled!
 */
 
 // Main toggle
-#define LAB_2	1
+#define LAB_2	0
 
 // Individual unit test toggles
-#define LAB2_PALINDROME_NUMBER		1
+#define LAB2_PALINDROME_NUMBER		0
 #define LAB2_FILL_FILE				0
-#define LAB2_FILL_ARRAY				1
-#define LAB2_CLEAR					1
-#define LAB2_SORT_ASCENDING			1
-#define LAB2_SORT_DESCENDING		1
+#define LAB2_FILL_ARRAY				0
+#define LAB2_CLEAR					0
+#define LAB2_SORT_ASCENDING			0
+#define LAB2_SORT_DESCENDING		0
 #define LAB2_BRACKETS				0
 #define LAB2_CONTAINS_TRUE			0
 #define LAB2_CONTAINS_FALSE			0
@@ -56,10 +56,7 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 inline int IsPalindromeNumber(unsigned int _num) {
 	// TODO: Implement this function	
-	std::string reverseNum = std::to_string(_num);
-	std::string wholeNum = reverseNum;
-	std::reverse(reverseNum.begin(), reverseNum.end());
-	return wholeNum == reverseNum ? true : false;
+	
 }
 
 class DSA_Lab2
@@ -75,41 +72,21 @@ public:
 
 	void Fill(const char* _inputFilename) {
 		// TODO: Implement this method
-		
+
 	}
 
 	void Fill(const int* _arr, size_t _size) {
 		// TODO: Implement this method
-		mValues.clear();
-		for (size_t i = 0; i < _size; i++)
-		{
-			mValues.push_back(_arr[i]);
-		}
+
 	}
 
 	void Clear() {
 		// TODO: Implement this method
-		mValues.clear();
-		std::vector<int>().swap(mValues);
-	}
-	void Sort(bool _ascending) {
 
+	}
+
+	void Sort(bool _ascending) {
 		// TODO: Implement this method
-		if (_ascending) {
-			std::sort(mValues.begin(), mValues.end());
-			return;
-		}
-		for (size_t i = 0; i < mValues.size(); i++)
-		{
-			for (size_t j = 0; j < mValues.size() - 1 - i; j++)
-			{
-				if (mValues[j] < mValues[j + 1]) {
-					int temp = mValues[j];
-					mValues[j] = mValues[j + 1];
-					mValues[j + 1] = temp;
-				}
-			}
-		}
 
 	}
 

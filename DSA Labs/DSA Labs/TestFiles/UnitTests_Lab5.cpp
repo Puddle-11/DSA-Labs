@@ -15,6 +15,7 @@ Notes:			Property of Full Sail University
 /************/
 #include "UnitTests_Lab5.h"
 #include "Memory_Management.h"
+#include <iostream>
 
 // Maximum points for each test
 #define POINTS_LAB5_PAIR_CTOR				2

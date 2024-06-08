@@ -15,6 +15,7 @@ Notes:			Property of Full Sail University
 /************/
 #include "UnitTests_Lab6.h"
 #include "Memory_Management.h"
+#include <iostream>
 
 // Maximum points for each test
 #define POINTS_LAB6_POPULATE_LETTER_VALUES	10

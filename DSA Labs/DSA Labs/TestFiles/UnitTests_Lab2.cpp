@@ -14,6 +14,7 @@ Notes:			Property of Full Sail University
 /************/
 #include "UnitTests_Lab2.h"
 #include "Memory_Management.h"
+#include <iostream>
 #include <string>
 
 // Maximum points for each test

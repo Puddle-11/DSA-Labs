@@ -13,6 +13,7 @@ Notes:			Property of Full Sail University
 /* Includes */
 /************/
 #include "UnitTests_Lab4.h"
+#include <iostream>
 
 // Maximum points for each test
 #define POINTS_LAB4_QUEUE_ADD			15
