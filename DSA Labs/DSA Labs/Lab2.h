@@ -75,6 +75,18 @@ public:
 
 	void Fill(const char* _inputFilename) {
 		// TODO: Implement this method
+		mValues.clear();
+		std::ifstream fs(_inputFilename, std::ios::binary);
+		int arrSize;
+		int currentVal;
+		fs.read((char*)&arrSize, 4);
+		for (int i = 0; i < arrSize; i++)
+		{
+			fs.read((char*)&currentVal, sizeof(int));
+			mValues.push_back(currentVal);
+		}
+		fs.close();
+
 		
 	}
 
