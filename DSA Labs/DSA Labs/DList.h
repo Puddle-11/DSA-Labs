@@ -43,22 +43,22 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB3_ADDTAIL_EMPTY				1
 #define LAB3_ADDTAIL					1
 #define LAB3_CLEAR						1
-#define LAB3_DTOR						0
+#define LAB3_DTOR						1
 #define LAB3_ITER_BEGIN					1
 #define LAB3_ITER_END					1
-#define LAB3_ITER_INCREMENT_PRE			0
-#define LAB3_ITER_INCREMENT_POST		0
-#define LAB3_ITER_DECREMENT_PRE			0
-#define LAB3_ITER_DECREMENT_POST		0
-#define LAB3_ITER_DEREFERENCE			0
-#define LAB3_INSERT_EMPTY				0
-#define LAB3_INSERT_HEAD				0
-#define LAB3_INSERT_MIDDLE				0
+#define LAB3_ITER_INCREMENT_PRE			1
+#define LAB3_ITER_INCREMENT_POST		1
+#define LAB3_ITER_DECREMENT_PRE			1
+#define LAB3_ITER_DECREMENT_POST		1
+#define LAB3_ITER_DEREFERENCE			1
+#define LAB3_INSERT_EMPTY				1
+#define LAB3_INSERT_HEAD				1
+#define LAB3_INSERT_MIDDLE				1
 #define LAB3_ERASE_EMPTY				1
 #define LAB3_ERASE_HEAD					1
 #define LAB3_ERASE_TAIL					1
 #define LAB3_ERASE_MIDDLE				1
-#define LAB3_ASSIGNMENT_OP				0
+#define LAB3_ASSIGNMENT_OP				1
 #define LAB3_COPY_CTOR					1
 
 template<typename Type>
@@ -90,27 +90,36 @@ public:
 
 		Iterator& operator++() {
 			// TODO: Implement this method
-		
+
+			mCurr = mCurr->next;
+			return *this;
 		}
 
 		Iterator operator++(int) {
-			// TODO: Implement this method
-			
+
+			Iterator temp;
+			temp.mCurr = this->mCurr;
+			mCurr = mCurr->next;
+			return temp;
 		}
 
 		Iterator& operator--() {
 			// TODO: Implement this method
-			
+			mCurr = mCurr->prev;
+			return *this;
 		}
 
 		Iterator operator--(int) {
-			// TODO: Implement this method
-			
+
+			Iterator temp;
+			temp.mCurr = this->mCurr;
+			mCurr = mCurr->prev;
+			return temp;
 		}
 
 		Type& operator*() {
 			// TODO: Implement this method
-			
+			return mCurr->data;
 		}
 
 	
@@ -137,19 +146,41 @@ public:
 
 	~DList() {
 		// TODO: Implement this method
-		
+		Clear();
+
 	}
 
 	DList(const DList& _copy)  {
-
-	
 		// TODO: Implement this method
-		
+		Iterator current;
+		current.mCurr = _copy.mHead;
+		mSize = 0;
+		mHead = nullptr;
+		mTail = nullptr;
+		while (current.mCurr != nullptr)
+		{
+			AddTail(current.mCurr->data);
+			current++;
+		}
 	}
 
 	DList& operator=(const DList& _assign) {
-		// TODO: Implement this method
+		if (this == &_assign) return *this;
 		
+		// TODO: Implement this method
+		Clear();
+		Iterator current;
+		current.mCurr = _assign.mHead;
+		mSize = 0;
+		mHead = nullptr;
+		mTail = nullptr;
+		while (current.mCurr != nullptr)
+		{
+			AddTail(current.mCurr->data);
+			current++;
+		}
+		
+		return *this;
 	}
 
 	void AddHead(const Type& _data) {
@@ -172,7 +203,6 @@ public:
 
 		if (temp != nullptr) temp->next = mTail;
 		if (mHead == nullptr) mHead = mTail;
-
 		mSize++;
 
 	}
@@ -185,13 +215,13 @@ public:
 			Node* next = nullptr;
 			while (true)
 			{
+				
 				next = mHead->next;
 
 				delete mHead;
 				mHead = next;
-				if (mHead->next == nullptr) 
+				if (mHead == nullptr) 
 				{
-					delete mHead;
 					break;
 				}
 			}
@@ -201,44 +231,61 @@ public:
 	}
 
 	Iterator Insert(Iterator& _iter, const Type& _data) {
-	
+		if (_iter.mCurr == nullptr || _iter.mCurr == mHead) {
+			//insert at head
+			AddHead(_data);
+			_iter.mCurr = mHead;
+		}
+		else {
+			Node* newNode = new Node(_data, _iter.mCurr, _iter.mCurr->prev);
+
+				_iter.mCurr->prev = newNode;
+				if (newNode->prev != nullptr) {
+					newNode->prev->next = newNode;
+				}
+			
+
+				mSize++;
+				_iter.mCurr = newNode;
+		}
+
+		return _iter;
 	}
 
 	Iterator Erase(Iterator& _iter) {
-		// TODO: Implement this method
-		if (mHead == nullptr) return _iter;
-		Node* current = mHead;
-		while (current != _iter.mCurr)
+
+		if (_iter.mCurr == nullptr) return _iter;		//check iterator validity
+
+		if (_iter.mCurr->prev == nullptr) 		//if at head, update head pointer position
 		{
-			if (current->next == nullptr) { 
-				
-				break;
-			}
-
-
-			if (current = _iter.mCurr) {
-				if (current->prev != nullptr) {
-					current->prev->next = current->next;
-				}
-				if (current->next != nullptr) {
-					current->next->prev = current->prev;
-				}
-				if (_iter.mCurr->next == nullptr) {
-					_iter.mCurr = _iter.mCurr->prev;
-
-				}
-				else {
-
-				_iter.mCurr = _iter.mCurr->next;
-				}
-				delete current;
-				
-				break;
-			}
-			current = current->next;
+			//at head
+			mHead = _iter.mCurr->next;
 		}
-		mSize--;
-		return _iter;
+		if (_iter.mCurr->next == nullptr) 		//if at tail, update tail pointer position
+		{
+			//at tail
+			mTail = _iter.mCurr->prev;
+		}
+		//store prev and next pointers of the target node, in temp variables
+		Node* prev = _iter.mCurr->prev;
+		Node* next = _iter.mCurr->next;
+
+		if (prev != nullptr) 		//link prev node to the next node after target node
+		{
+		prev->next = next;
+		}
+		if(next != nullptr) 		//link next node to the prev node after target node
+		{
+		next->prev = prev;
+		}
+
+		delete _iter.mCurr;		//delete target node
+		
+		_iter.mCurr = next;		//update iterator position to next node (will return nullptr if deleting tail)
+		
+		mSize--; //update size
+
+		return _iter; //return iterator
 	}
 
 	Iterator Begin() const {
