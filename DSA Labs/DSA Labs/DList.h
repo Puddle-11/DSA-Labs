@@ -32,20 +32,20 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_3	0
+#define LAB_3	1
 
 // Individual unit test toggles			
-#define LAB3_CTOR						0
-#define LAB3_NODE_CTOR_DEFAULT			0
-#define LAB3_NODE_CTOR					0
-#define LAB3_ADDHEAD_EMPTY				0
-#define LAB3_ADDHEAD					0
-#define LAB3_ADDTAIL_EMPTY				0
-#define LAB3_ADDTAIL					0
-#define LAB3_CLEAR						0
+#define LAB3_CTOR						1
+#define LAB3_NODE_CTOR_DEFAULT			1
+#define LAB3_NODE_CTOR					1
+#define LAB3_ADDHEAD_EMPTY				1
+#define LAB3_ADDHEAD					1
+#define LAB3_ADDTAIL_EMPTY				1
+#define LAB3_ADDTAIL					1
+#define LAB3_CLEAR						1
 #define LAB3_DTOR						0
-#define LAB3_ITER_BEGIN					0
-#define LAB3_ITER_END					0
+#define LAB3_ITER_BEGIN					1
+#define LAB3_ITER_END					1
 #define LAB3_ITER_INCREMENT_PRE			0
 #define LAB3_ITER_INCREMENT_POST		0
 #define LAB3_ITER_DECREMENT_PRE			0
@@ -54,12 +54,12 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB3_INSERT_EMPTY				0
 #define LAB3_INSERT_HEAD				0
 #define LAB3_INSERT_MIDDLE				0
-#define LAB3_ERASE_EMPTY				0
-#define LAB3_ERASE_HEAD					0
-#define LAB3_ERASE_TAIL					0
-#define LAB3_ERASE_MIDDLE				0
+#define LAB3_ERASE_EMPTY				1
+#define LAB3_ERASE_HEAD					1
+#define LAB3_ERASE_TAIL					1
+#define LAB3_ERASE_MIDDLE				1
 #define LAB3_ASSIGNMENT_OP				0
-#define LAB3_COPY_CTOR					0
+#define LAB3_COPY_CTOR					1
 
 template<typename Type>
 class DList {
@@ -75,7 +75,9 @@ class DList {
 	
 		Node(const Type& _data, Node* _next = nullptr, Node* _prev = nullptr) {
 			// TODO: Implement this method
-			
+			data = _data;
+			next = _next;
+			prev = _prev;
 		}
 	};
 
@@ -126,6 +128,9 @@ public:
 public:
 
 	DList() {
+		mHead = nullptr;
+		mTail = nullptr;
+			mSize = 0;
 		// TODO: Implement this method
 		
 	}
@@ -136,6 +141,8 @@ public:
 	}
 
 	DList(const DList& _copy)  {
+
+	
 		// TODO: Implement this method
 		
 	}
@@ -146,37 +153,106 @@ public:
 	}
 
 	void AddHead(const Type& _data) {
-		// TODO: Implement this method
+		Node* temp = mHead;
+
+		mHead = new Node(_data, temp, nullptr);
 		
+		if (temp != nullptr) temp->prev = mHead;
+		if (mTail == nullptr) mTail = mHead;
+
+
+		mSize++;
 	}
 
 	void AddTail(const Type& _data) {
 		// TODO: Implement this method
-		
+		Node* temp = mTail;
+
+		mTail = new Node(_data, nullptr, temp);
+
+		if (temp != nullptr) temp->next = mTail;
+		if (mHead == nullptr) mHead = mTail;
+
+		mSize++;
+
 	}
 
 	void Clear() {
 		// TODO: Implement this method
-		
+		if (mHead != nullptr) {
+
+
+			Node* next = nullptr;
+			while (true)
+			{
+				next = mHead->next;
+
+				delete mHead;
+				mHead = next;
+				if (mHead->next == nullptr) 
+				{
+					delete mHead;
+					break;
+				}
+			}
+			mHead = mTail = nullptr;
+			mSize = 0;
+		}
 	}
 
 	Iterator Insert(Iterator& _iter, const Type& _data) {
-		// Implement this method
-		
+	
 	}
 
 	Iterator Erase(Iterator& _iter) {
 		// TODO: Implement this method
-		
+		if (mHead == nullptr) return _iter;
+		Node* current = mHead;
+		while (current != _iter.mCurr)
+		{
+			if (current->next == nullptr) { 
+				
+				break;
+			}
+
+
+			if (current = _iter.mCurr) {
+				if (current->prev != nullptr) {
+					current->prev->next = current->next;
+				}
+				if (current->next != nullptr) {
+					current->next->prev = current->prev;
+				}
+				if (_iter.mCurr->next == nullptr) {
+					_iter.mCurr = _iter.mCurr->prev;
+
+				}
+				else {
+
+				_iter.mCurr = _iter.mCurr->next;
+				}
+				delete current;
+				
+				break;
+			}
+			current = current->next;
+		}
+		mSize--;
+		return _iter;
 	}
 
 	Iterator Begin() const {
 		// TODO: Implement this method
-		
+		Iterator i;
+		i.mCurr = mHead;
+		return i;
 	}
 
 	Iterator End() const {
 		// TODO: Implement this method
-		
+		Iterator i;
+		i.mCurr = mTail->next;
+
+		return i;
 	}
 };

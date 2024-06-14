@@ -32,13 +32,13 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_4	0
+#define LAB_4 1
 
 // Individual unit test toggles
-#define LAB4_QUEUE_ADD			0
-#define LAB4_STACK_ADD			0
-#define LAB4_QUEUE_REMOVE		0
-#define LAB4_STACK_REMOVE		0
+#define LAB4_QUEUE_ADD			1
+#define LAB4_STACK_ADD			1
+#define LAB4_QUEUE_REMOVE		1
+#define LAB4_STACK_REMOVE		1
 #define LAB4_INSERT_ITER		0
 #define LAB4_INSERT_INDEX		0
 #define LAB4_REMOVE_DECIMAL		0
@@ -59,22 +59,30 @@ public:
 
 	void QueueOrderingAdd(const float* _arr, size_t _size) {
 		// TODO: Implement this method
-		
+		for (size_t i = 0; i < _size; i++)
+		{
+			mList.push_back(_arr[i]);
+		}
 	}
 
 	void StackOrderingAdd(const float* _arr, size_t _size) {
 		// TODO: Implement this method
-		
+		for (size_t i = 0; i < _size; i++)
+		{
+			mList.push_front(_arr[i]);
+		}
 	}
 
 	float QueueOrderingRemove() {
-		// TODO: Implement this method
-		
+		return StackOrderingRemove();
 	}
 
 	float StackOrderingRemove() {
 		// TODO: Implement this method
-		
+		float temp = mList.front();
+		mList.pop_front();
+
+		return temp;
 	}
 
 	void Insert(int _index, float _val) {

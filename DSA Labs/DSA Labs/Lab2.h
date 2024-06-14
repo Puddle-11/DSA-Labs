@@ -79,15 +79,13 @@ public:
 		std::ifstream fs(_inputFilename, std::ios::binary);
 		int arrSize;
 		int currentVal;
-		fs.read((char*)&arrSize, 4);
+		fs.read((char*)&arrSize, sizeof(int));
 		for (int i = 0; i < arrSize; i++)
 		{
 			fs.read((char*)&currentVal, sizeof(int));
 			mValues.push_back(currentVal);
 		}
 		fs.close();
-
-		
 	}
 
 	void Fill(const int* _arr, size_t _size) {
