@@ -39,9 +39,9 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB4_STACK_ADD			1
 #define LAB4_QUEUE_REMOVE		1
 #define LAB4_STACK_REMOVE		1
-#define LAB4_INSERT_ITER		0
-#define LAB4_INSERT_INDEX		0
-#define LAB4_REMOVE_DECIMAL		0
+#define LAB4_INSERT_ITER		1
+#define LAB4_INSERT_INDEX		1
+#define LAB4_REMOVE_DECIMAL		1
 
 /************/
 /* Includes */
@@ -87,17 +87,36 @@ public:
 
 	void Insert(int _index, float _val) {
 		// TODO: Implement this method
-		
+		if (_index < 0 || _index > mList.size()) {
+			return;
+		}
+		std::list<float>::iterator _iter = mList.begin();
+		std::advance(_iter, _index);
+		mList.insert(_iter, _val);
+
 	}
 
 	void Insert(std::list<float>::iterator _iter, float _val) {
 		// TODO: Implement this method
-		
+		mList.insert(_iter, _val);
 	}
 
 	int RemoveDecimalGreater(float _decimal) {
 		// TODO: Implement this method
-		
+		std::list<float> tempList;
+		int elNum = 0;
+		for (std::list<float>::iterator _iter = mList.begin(); _iter != mList.end(); _iter++)
+		{
+			if (*_iter - (int)*_iter <= _decimal) {
+				tempList.push_back(*_iter);
+			}
+			else {
+				elNum++;
+
+			}
+		}
+		mList = tempList;
+		return elNum;
 	}
  	
 };

@@ -254,34 +254,43 @@ public:
 
 	Iterator Erase(Iterator& _iter) {
 
-		if (_iter.mCurr == nullptr) return _iter;		//check iterator validity
+		//Sorry i had to actally fully comment this method to understand what i was actually doing
 
-		if (_iter.mCurr->prev == nullptr) 		//if at head, update head pointer position
+		if (_iter.mCurr == nullptr) return _iter;//check iterator validity
+
+		//if at head, update head pointer position
+		if (_iter.mCurr->prev == nullptr) 
 		{
 			//at head
 			mHead = _iter.mCurr->next;
 		}
-		if (_iter.mCurr->next == nullptr) 		//if at tail, update tail pointer position
+		//if at tail, update tail pointer position
+		if (_iter.mCurr->next == nullptr) 
 		{
 			//at tail
 			mTail = _iter.mCurr->prev;
 		}
+
 		//store prev and next pointers of the target node, in temp variables
 		Node* prev = _iter.mCurr->prev;
 		Node* next = _iter.mCurr->next;
 
-		if (prev != nullptr) 		//link prev node to the next node after target node
+		//link prev node to the next node after target node
+		if (prev != nullptr)
 		{
 		prev->next = next;
 		}
-		if(next != nullptr) 		//link next node to the prev node after target node
+		//link next node to the prev node after target node
+		if(next != nullptr)
 		{
 		next->prev = prev;
 		}
 
-		delete _iter.mCurr;		//delete target node
-		
-		_iter.mCurr = next;		//update iterator position to next node (will return nullptr if deleting tail)
+		//delete target node
+		delete _iter.mCurr;
+
+		//update iterator position to next node (will return nullptr if deleting tail)
+		_iter.mCurr = next;
 		
 		mSize--; //update size
 
