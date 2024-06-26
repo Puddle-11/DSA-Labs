@@ -37,18 +37,18 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_7	0
+#define LAB_7	1
 
 // Individual unit test toggles
-#define BST_CTOR								0
-#define BST_NODE_CTOR							0
-#define BST_PUSH_EMPTY							0
-#define BST_PUSH_LEFT							0
-#define BST_PUSH_RIGHT							0
+#define BST_CTOR								1
+#define BST_NODE_CTOR							1
+#define BST_PUSH_EMPTY							1
+#define BST_PUSH_LEFT							1
+#define BST_PUSH_RIGHT							1
 #define BST_CLEAR								0
 #define BST_DTOR								0
-#define BST_CONTAINS_FOUND						0
-#define BST_CONTAINS_NOTFOUND					0
+#define BST_CONTAINS_FOUND						1
+#define BST_CONTAINS_NOTFOUND					1
 #define BST_REMOVE_CASE0_ROOT					0
 #define BST_REMOVE_CASE0_LEFT					0
 #define BST_REMOVE_CASE0_RIGHT					0
@@ -80,9 +80,13 @@ class BST {
 		Node* left, * right;		
 		Node* parent;				
 
-			Node(const Type& _data, Node* _parent = nullptr) {
+		Node(const Type& _data, Node* _parent = nullptr) {
 			// TODO: Implement this method
-
+			data = _data;
+			
+			parent = _parent;
+			left = nullptr;
+			right = nullptr;
 		}
 	};
 
@@ -93,6 +97,8 @@ class BST {
 public:
 
 	BST() {
+
+		mRoot = nullptr;
 		// TODO: Implement this method
 
 	}
@@ -138,11 +144,68 @@ public:
 
 	void Push(const Type& _val) {
 		// TODO: Implement this method
+		Node* newNode = new Node(_val);
+		if (mRoot == nullptr) {
+			mRoot = newNode;
+			return;
+		}
+		else {
+			Node* temp = mRoot;
+			while (true)
+			{
+				if (newNode->data < temp->data) {
+					if (temp->left == nullptr) {
+						temp->left = newNode;
+						newNode->parent = temp;
+						break;
+					}
+					else {
+						temp = temp->left;
+					}
+				}
+				else {
+					if (temp->right == nullptr) {
+						temp->right = newNode;
+						newNode->parent = temp;
+						break;
+					}
+					else {
+						temp = temp->right;
+					}
+				}
+			}
 
+
+		}
 	}
 
 	bool Contains(const Type& _val) {
 		// TODO: Implement this method
+		Node* temp = mRoot;
+		if (temp == nullptr) return false;
+		while (true)
+		{
+			if (temp->data > _val) 
+			{
+				//go left
+				if (temp->left == nullptr) return false; //no value found
+				
+				temp = temp->left;
+
+			}
+			else if (temp->data < _val) 
+			{
+
+				//go right
+				if (temp->right == nullptr) return false; //no value found
+				
+				temp = temp->right;
+			}
+			else {
+				//found
+				return true;
+			}
+		}
 
 	}
 

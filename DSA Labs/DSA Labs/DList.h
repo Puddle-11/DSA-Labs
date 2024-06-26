@@ -239,14 +239,13 @@ public:
 		else {
 			Node* newNode = new Node(_data, _iter.mCurr, _iter.mCurr->prev);
 
-				_iter.mCurr->prev = newNode;
-				if (newNode->prev != nullptr) {
-					newNode->prev->next = newNode;
-				}
+			_iter.mCurr->prev = newNode;
+				newNode->prev->next = newNode;
 			
 
-				mSize++;
-				_iter.mCurr = newNode;
+
+			mSize++;
+			_iter.mCurr = newNode;
 		}
 
 		return _iter;
