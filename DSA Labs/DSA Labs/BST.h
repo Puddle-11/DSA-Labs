@@ -49,17 +49,17 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define BST_DTOR								0
 #define BST_CONTAINS_FOUND						1
 #define BST_CONTAINS_NOTFOUND					1
-#define BST_REMOVE_CASE0_ROOT					0
-#define BST_REMOVE_CASE0_LEFT					0
-#define BST_REMOVE_CASE0_RIGHT					0
-#define BST_REMOVE_CASE1_ROOT_LEFT				0
-#define BST_REMOVE_CASE1_ROOT_RIGHT				0
-#define BST_REMOVE_CASE1_LEFT_LEFT				0
-#define BST_REMOVE_CASE1_LEFT_RIGHT				0
-#define BST_REMOVE_CASE1_RIGHT_LEFT				0
-#define BST_REMOVE_CASE1_RIGHT_RIGHT			0
-#define BST_REMOVE_CASE2_CASE0					0
-#define BST_REMOVE_CASE2_CASE1					0
+#define BST_REMOVE_CASE0_ROOT					1
+#define BST_REMOVE_CASE0_LEFT					1
+#define BST_REMOVE_CASE0_RIGHT					1
+#define BST_REMOVE_CASE1_ROOT_LEFT				1
+#define BST_REMOVE_CASE1_ROOT_RIGHT				1
+#define BST_REMOVE_CASE1_LEFT_LEFT				1
+#define BST_REMOVE_CASE1_LEFT_RIGHT				1
+#define BST_REMOVE_CASE1_RIGHT_LEFT				1
+#define BST_REMOVE_CASE1_RIGHT_RIGHT			1
+#define BST_REMOVE_CASE2_CASE0					1
+#define BST_REMOVE_CASE2_CASE1					1
 #define BST_REMOVE_CASE0						0
 #define BST_REMOVE_CASE1						0
 #define BST_REMOVE_CASE2						0
@@ -181,48 +181,109 @@ public:
 
 	bool Contains(const Type& _val) {
 		// TODO: Implement this method
-		Node* temp = mRoot;
-		if (temp == nullptr) return false;
-		while (true)
-		{
-			if (temp->data > _val) 
-			{
-				//go left
-				if (temp->left == nullptr) return false; //no value found
-				
-				temp = temp->left;
 
-			}
-			else if (temp->data < _val) 
-			{
-
-				//go right
-				if (temp->right == nullptr) return false; //no value found
-				
-				temp = temp->right;
-			}
-			else {
-				//found
-				return true;
-			}
-		}
-
+		return FindNode(_val) != nullptr ? true : false;
 	}
 
 private:
 
 	Node* FindNode(const Type& _val) {
-		
+		Node* temp = mRoot;
+		if (temp == nullptr) return nullptr;
+		while (true)
+		{
+			if (temp->data > _val)
+			{
+				//go left
+				if (temp->left == nullptr) return nullptr; //no value found
+
+				temp = temp->left;
+
+			}
+			else if (temp->data < _val)
+			{
+
+				//go right
+				if (temp->right == nullptr) return nullptr; //no value found
+
+				temp = temp->right;
+			}
+			else {
+				//found
+				return temp;
+			}
+		}
+
 	}
 
 	void RemoveCase0(Node* _node) {
 		// TODO: Implement this method
+		if (_node->parent == nullptr) {
 
+			mRoot = nullptr;
+		}
+		else if (_node->parent->left == _node) {
+			//left
+			_node->parent->left = nullptr;
+		}
+		else if (_node->parent->right == _node) {
+			//right
+			_node->parent->right = nullptr;
+
+		}
+
+		delete _node;
 	}
 
 	void RemoveCase1(Node* _node) {
 		// TODO: Implement this method
+		if (_node->parent == nullptr) {
+			//root
+			if (_node->left != nullptr) {
+				//move left
+				mRoot = _node->left;
+				_node->left->parent = nullptr;
+			}
+			else if (_node->right != nullptr)
+			{
+				mRoot = _node->right;
+				_node->right->parent = nullptr;
+				//move right
+			}
 
+		}
+		else if (_node->parent->left == _node) {
+			//left
+			if (_node->left != nullptr) {
+				//move left
+				_node->parent->left = _node->left;
+				_node->left->parent = _node->parent;
+			}
+			else if(_node->right != nullptr)
+			{
+				_node->parent->left = _node->right;
+				_node->right->parent = _node->parent;
+				//move right
+			}
+
+		}
+		else if (_node->parent->right == _node) {
+			//right
+			if (_node->left != nullptr) {
+				//move left
+				_node->parent->right = _node->left;
+				_node->left->parent = _node->parent;
+			}
+			else if (_node->right != nullptr)
+			{
+				_node->parent->right = _node->right;
+				_node->right->parent = _node->parent;
+
+				//move right
+			}
+		}
+
+		delete _node;
 	}
 
 	void RemoveCase2(Node* _node) {
